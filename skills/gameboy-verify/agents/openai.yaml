@@ -1,0 +1,4 @@
+interface:
+  display_name: "Game Boy Verify"
+  short_description: "Check ROM integrity and emulator gameplay"
+  default_prompt: "Use $gameboy-verify to validate my ROM and test its gameplay in an emulator."

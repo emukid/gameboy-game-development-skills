@@ -1,0 +1,9 @@
+{
+  "pyboy": "2.7.0",
+  "model": "dmg",
+  "frames": 180,
+  "rom_sha256": "7aff0c68f90c27a0cfec85b9c2d2faab557d1dc1d861cbcaa563a442b9fe3200",
+  "screen_sha256": "01a19363f5171dd0d495c398224e02a6afed533521a52e6a87ee7790b17a8962",
+  "distinct_colors": 3,
+  "gameplay_verified": false
+}

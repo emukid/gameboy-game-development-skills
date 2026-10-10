@@ -1,0 +1,4 @@
+interface:
+  display_name: "Game Boy Build"
+  short_description: "Build playable Game Boy ROMs with GBDK C"
+  default_prompt: "Use $gameboy-build to implement and compile my Game Boy game as a playable ROM."

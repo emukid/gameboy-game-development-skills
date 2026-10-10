@@ -1,0 +1,11 @@
+{
+  "bytes": 32768,
+  "sha256": "7aff0c68f90c27a0cfec85b9c2d2faab557d1dc1d861cbcaa563a442b9fe3200",
+  "errors": [],
+  "title": "FORGE",
+  "cartridge_type": "0x00",
+  "cgb_flag": "0x00",
+  "declared_rom_bytes": 32768,
+  "declared_ram_bytes": 0,
+  "mapper": "ROM"
+}

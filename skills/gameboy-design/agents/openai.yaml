@@ -1,0 +1,4 @@
+interface:
+  display_name: "Game Boy Design"
+  short_description: "Design games within Game Boy hardware limits"
+  default_prompt: "Use $gameboy-design to turn my game idea into an implementable Game Boy design."

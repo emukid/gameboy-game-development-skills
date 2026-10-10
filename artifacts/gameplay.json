@@ -1,0 +1,33 @@
+{
+  "pyboy": "2.7.0",
+  "model": "DMG",
+  "rom_sha256": "7aff0c68f90c27a0cfec85b9c2d2faab557d1dc1d861cbcaa563a442b9fe3200",
+  "checks": [
+    "boot enters title",
+    "title ignores movement",
+    "Start enters play",
+    "held Start does not reset play",
+    "movement changes rendered screen",
+    "left boundary clamps without wrap",
+    "upper boundary clamps without wrap",
+    "right boundary clamps",
+    "lower boundary clamps",
+    "player_x reaches 120",
+    "player_y reaches 64",
+    "target 1 collected exactly once",
+    "player_x reaches 32",
+    "player_y reaches 32",
+    "target 2 collected exactly once",
+    "player_x reaches 120",
+    "player_y reaches 104",
+    "touching target edge does not collect",
+    "target 3 collected exactly once",
+    "third target enters win",
+    "win changes background palette",
+    "win hides target in hardware OAM",
+    "restart resets run",
+    "restart restores palette",
+    "restart renders first target at expected OAM position"
+  ],
+  "passed": 25
+}
