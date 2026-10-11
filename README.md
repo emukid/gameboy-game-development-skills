@@ -1,35 +1,76 @@
+<div align="center">
+
 # Game Boy Forge
 
-Three Codex skills for designing, implementing, compiling, and testing original Game Boy homebrew ROMs.
+Codex skills for designing, building, and testing original Game Boy homebrew.
 
-| Skill | Use it for |
-| --- | --- |
-| [gameboy-design](skills/gameboy-design/SKILL.md) | Gameplay, controls, screen layout, assets, hardware budgets, acceptance cases |
-| [gameboy-build](skills/gameboy-build/SKILL.md) | GBDK C implementation, tile conversion, scaffolding, reproducible ROM builds |
-| [gameboy-verify](skills/gameboy-verify/SKILL.md) | Header checks, emulator input tests, screenshots, verification reports |
+[![GitHub stars](https://img.shields.io/github/stars/emukid/gameboy-game-development-skills?style=for-the-badge)](https://github.com/emukid/gameboy-game-development-skills/stargazers)
 
-The default is DMG-compatible Game Boy with GBDK-2020 C. CGB, banking, audio, saves, and existing RGBDS projects have additional guidance. Game Boy Advance is a separate target. The included executable starter and automated gameplay tests cover DMG with a ROM-only cartridge.
+</div>
 
-## Use the skills
+## What is this?
 
-Copy each folder under `skills/` into `${CODEX_HOME:-$HOME/.codex}/skills/`, preserving scripts, references, and assets. Do not overwrite an existing customized skill without reviewing it. Start a new Codex session to discover newly installed skills. All three allow automatic selection, and can also be invoked explicitly:
+Game Boy Forge packages three Codex skills that take a game idea through a concrete design, a compiled ROM, and emulator acceptance tests. Each skill includes instructions and references; the build and verification skills also provide executable helpers, a complete C starter, and a tested sample ROM.
 
-```text
-Use $gameboy-design to design a one-screen Game Boy arena game.
-Use $gameboy-build to implement that design and compile the ROM.
-Use $gameboy-verify to test the ROM against its acceptance cases.
+New projects default to DMG-compatible Game Boy and GBDK-2020 C. The references cover Game Boy Color, banking, audio, saves, and existing RGBDS projects; the included executable demonstration covers DMG with a ROM-only cartridge. Game Boy Advance is a separate target.
+
+## Quick Start
+
+Clone the repository and copy the three skill folders into your Codex skills directory:
+
+```sh
+git clone https://github.com/emukid/gameboy-game-development-skills.git
+cd gameboy-game-development-skills
+mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
+cp -R -i skills/gameboy-design skills/gameboy-build skills/gameboy-verify \
+  "${CODEX_HOME:-$HOME/.codex}/skills/"
 ```
 
-For one request, ask the agent to use all three and deliver source plus the tested ROM. A design-only request stays design-only. The starter demonstrates a small collection game; agents should replace its mechanics and assets to match the actual request.
+The copy preserves each skill's scripts, references, and assets. If a skill is already installed, review it before accepting any overwrite prompts. Start a new Codex session so the installed skills are discovered, then ask:
 
-## Build and run the included game
+```text
+Use $gameboy-design, $gameboy-build, and $gameboy-verify to create
+a one-screen Game Boy arena game. Deliver the source, compiled ROM,
+and a report showing which acceptance tests passed.
+```
 
-Download and extract a host-matching [GBDK-2020 4.5.0 release](https://github.com/gbdk-2020/gbdk-2020/releases/tag/4.5.0). Python 3.9+ and Make are used below. Run from this repository:
+You can also invoke each skill separately. A design-only request produces a design; a build request should continue through implementation and verification. The starter's collection game is an example to adapt to your requested mechanics.
+
+## The three skills
+
+| Skill | Purpose | Deliverables |
+| --- | --- | --- |
+| [gameboy-design](skills/gameboy-design/SKILL.md) | Define gameplay, controls, screen layout, assets, and hardware budgets | Game design and deterministic acceptance cases |
+| [gameboy-build](skills/gameboy-build/SKILL.md) | Implement GBDK C, convert tile art, scaffold projects, and compile | Source, assets, ROM, map/symbol files, and repeatable build commands |
+| [gameboy-verify](skills/gameboy-verify/SKILL.md) | Check ROM headers and exercise gameplay in an emulator | Test results, screenshots, artifact hashes, and stated limitations |
+
+## Try the included game
+
+Open [Three targets](artifacts/three-targets.gb) in a Game Boy emulator. Press **Start**, move with the **D-pad**, and collect three outlined targets. The background inverts on victory; **Start** restarts the game.
+
+<p align="center">
+  <img src="artifacts/three-targets.png" alt="Three targets gameplay: a solid player on the left and an outlined target on the right, over a checker background" width="320">
+</p>
+
+The sample has no text, audio, saves, pause, or lose state. Its complete source and design are in [the starter project](skills/gameboy-build/assets/starter/).
+
+### Build from source
+
+Install Python 3.9+, Make, and a host-matching [GBDK-2020 4.5.0 release](https://github.com/gbdk-2020/gbdk-2020/releases/tag/4.5.0). Extract GBDK and set `GBDK_HOME` to the directory containing `bin/lcc`. From the repository root:
 
 ```sh
 python3 skills/gameboy-build/scripts/new_project.py /tmp/forge-demo
 make -C /tmp/forge-demo GBDK_HOME=/absolute/path/to/gbdk
 python3 skills/gameboy-verify/scripts/check_rom.py /tmp/forge-demo/build/game.gb
+```
+
+The build produces `game.gb`, `game.map`, and `game.noi` under `/tmp/forge-demo/build/`. Scaffolding refuses an existing destination, so choose a new path when repeating the example.
+
+### Exercise gameplay
+
+Create a virtual environment and install the pinned PyBoy and Pillow dependencies:
+
+```sh
 python3 -m venv /tmp/forge-verify
 /tmp/forge-verify/bin/python -m pip install -r skills/gameboy-verify/scripts/requirements.txt
 /tmp/forge-verify/bin/python skills/gameboy-verify/scripts/test_starter.py \
@@ -37,16 +78,46 @@ python3 -m venv /tmp/forge-verify
   --screenshot /tmp/forge-play.png
 ```
 
-Use new destination/screenshot paths when rerunning. On Windows use the virtual environment's `Scripts/python.exe` and the direct compilation command documented in the build skill if Make is unavailable.
+This test drives real button input and checks the unchanged starter's title, movement, boundaries, collection, victory, and restart. Choose a new screenshot path on each run; adapt the acceptance cases when you change the game.
 
-Open [the compiled sample](artifacts/three-targets.gb) in a Game Boy emulator. Press Start, move with the D-pad, and collect three outlined targets. The background inverts on victory; Start restarts. The sample intentionally has no text, audio, saves, or lose state. Its complete source and design live in [the starter](skills/gameboy-build/assets/starter/).
+On Windows, use the virtual environment's `Scripts/python.exe`, choose native destination paths, and follow the [direct compilation instructions](skills/gameboy-build/references/toolchains.md) if Make is unavailable. The toolchain and Python dependencies are installed separately. No commercial game or proprietary boot ROM is needed.
 
-## Evidence
+## Project structure
 
-See [VERIFICATION.md](VERIFICATION.md) for versions, hashes, commands, scope, and results. The suite includes actual compilation and emulator execution, malformed-ROM tests, pixel bitplane tests, and refusal to overwrite existing projects/assets. Run helper tests with:
+```text
+artifacts/                      # Sample ROM, symbols, screenshot, and test reports
+skills/
+  gameboy-build/                # Build instructions, scripts, and C starter
+  gameboy-design/               # Design instructions and hardware reference
+  gameboy-verify/               # ROM checks and emulator tests
+tests/                         # Helper regression tests
+README.md
+VERIFICATION.md                # Recorded validation evidence and limitations
+```
+
+## Documentation and verification
+
+| Resource | What it covers |
+| --- | --- |
+| [Hardware reference](skills/gameboy-design/references/hardware.md) | Display, tiles, sprites, memory, and cartridge budgets |
+| [Toolchains](skills/gameboy-build/references/toolchains.md) | GBDK commands and the RGBDS alternative |
+| [Implementation guide](skills/gameboy-build/references/implementation.md) | Frame timing, input, collisions, graphics, sound, banking, and saves |
+| [Emulator testing](skills/gameboy-verify/references/emulator-testing.md) | Repeatable inputs, observations, and testing limits |
+| [Sample design](skills/gameboy-build/assets/starter/GAME_DESIGN.md) | Exact controls, coordinates, state transitions, and acceptance cases |
+| [Verification report](VERIFICATION.md) | Tool versions, commands, hashes, results, and untested extension paths |
+
+The recorded demonstration includes identical ROM hashes from two clean builds, 11 passing helper tests, and 25 passing gameplay assertions. CGB, RGBDS, audio, bank switching, battery saves, and physical hardware are documented extension paths and were not validated by this sample.
+
+Run the helper tests from the repository root:
 
 ```sh
 python3 -m unittest discover -s tests -v
 ```
 
-The toolchain and Python environment are local dependencies, not bundled skill content. No commercial game or proprietary boot ROM is needed.
+## Contributing
+
+Keep changes with the skill they support, preserve its relative references and assets, and run the helper tests. For starter or gameplay-test changes, also compile the ROM and exercise it in the emulator. Include exact commands and observed results when updating verification claims.
+
+<a href="https://github.com/emukid/gameboy-game-development-skills/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=emukid/gameboy-game-development-skills" alt="Repository contributors">
+</a>
